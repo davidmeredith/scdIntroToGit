@@ -65,12 +65,12 @@ Tip: To view this markdown file (.md) as a webpage, install a markdown viewer/pl
 
 demo1 - Create repo from existing files, add .gitignore
 --------------------------------------------------------
-* Create a git repo from an existing project. 
+* Create a Git repo from an existing project. 
 * Create some files that will be added to .gitignore. 
 * Add all files to staging area (index), commit and repeat. 
 * Note ignored files are not included, and the linear history and the location of HEAD pointer.  
 
-```
+```bash
 mkdir demo1; cd demo1      # create demo subdir
 vim index.html             # copy content from above
 vim page1.html             # copy content from above 
@@ -95,15 +95,15 @@ git log --oneline --graph --decorate --all # note HEAD-pointsTo->master-pointsTo
 
 demo2 - Delete/Rename files, Checkout snapshot 
 ----------------------------------------------
-* Delete a versioned file and commit (but leave in working dir), note outupt of git status.  
+* Delete a versioned file and commit (but leave in working dir), note outupt of `git status`.  
 * Checkout a historical commit (detached-HEAD-state), note working dir files are updated to match the commit snapshot and the deleted page is restored (note we are not checking out another branch, this comes later). 
-  * 'git checkout commitID'   (where commitID is a hash or reference to a hash, e.g. HEAD~2)
+  * `git checkout <commitID>`  (where `<commitID>` is a hash or reference to a hash, e.g. `HEAD~2`)
   * Git changes HEAD to point to the commitID putting git in 'detached-HEAD-state' 
   * Populates Index with the snapshot to reflect the commitID snapshot  
   * Copies the contents of the Index into your Working Directory (is safe - any local modifications to the files in the working tree are kept, so that the resulting working tree will be the state recorded in the commit plus the local modifications). 
 * Checkout master branch, note HEAD pointer is moved and local files are updated (page2 removed). 
 
-```
+```bash
 cp -r demo1 demo2
 cd demo2
 cp page1.html page2.html   
@@ -132,7 +132,7 @@ demo3 - Branching1: Linear history and 'FastForward' merge
 * Show the patch introduced by bugFix merge. 
 * Delete the bugFix topic branch. 
 
-```
+```bash
 git branch             # note we are on 'master' branch
 git checkout -b bugFix # create bugFix branch and check it out
 git branch             # note we are now on bugFix indicated by * 
@@ -172,10 +172,10 @@ demo4 - Branching2: Forked history and 3 way 'recursive' merge
 * Create/checkout footer branch, add footer code and commit.
 * Checkout master and modify/commit index.html file to produce forked history. 
 * Note changes in footer branch not yet merged. 
-* merge footer into master and note recursive merge and master moves ahead of footer branch. 
+* Merge footer into master and note recursive merge and master moves ahead of footer branch. 
 * Delete footer topic branch. 
 
-```
+```bash
 git checkout -b footer        # create and checkout footer branch
 vim index.html                # un-comment footer
 vim page1.html                # un-comment footer 
@@ -237,7 +237,7 @@ demo5 - Rebasing: Flatten a fork to create a flat history
 * Bring master pointer up to date - note fastForward merge. 
 * Delete updateFooterFix branch 
 
-```
+```bash
 git checkout -b updateFooterFix
 vim index.html      # update footer (add text 'and SCD')
 vim page1.html      # update footer (add text 'and SCD')
@@ -307,7 +307,7 @@ demo6 - Dealing with Merge Conflicts
 * Merge dev into master, creates a CONFLICT. 
 * Fix conflict markers in file, add/stage and commit to fix conflict. 
 
-```
+```bash
 git checkout -b dev
 vim index.html            # modify both paragraphs (add text 'modified in DEV') 
 git commit -a -m "made some changes in DEV"
@@ -368,7 +368,7 @@ demo7 - Stashing
 5. Locally modify same file (file is now 'ahead' of master version + locally modified) 
 6. Prevented checkout of different branch 
 
-```
+```bash
 git checkout dev
 vim index.html             # add some new text e.g. 'move dev ahead of master'
 cp page1.html page2.html   # create new local file
@@ -384,7 +384,7 @@ git checkout master        # now try to checkout master branch - we get error
 * Q. What if an urgent bug fix comes in and we need to work on the master branch? 
 * A. We can either commit these local changes in dev (but we are not ready to do this yet) or we can **stash** our local changes:  
 
-```
+```bash
 git stash -u         # stash the local changes ('-u' for to stash untracked file page2)
 less index.html      # note stashing has reverted local changes (index file has rolled-back to last commit and page2 is removed) 
 git stash list       # note the stashed changes in stash@{0} 
@@ -397,7 +397,7 @@ git checkout master  # as before we CANT now switch to master again
       error: Your local changes to the following files would be overwritten by checkout
 ```
 To FastForward master for next demo: 
-```
+```bash
 git commit -a -m "adding stashed changes"   # only when you are ready should you commit 
 git checkout master  # we can now checkout master again  
 git merge dev        # FF master (merge dev which is ahead into master) 
@@ -420,22 +420,22 @@ demo8 - Reset
 
 
 * 3 Different ways to preserve (or not) the changes introduced by the 'squashed' commits when resetting:
-* **reset --soft [commitID]** 
+* **`reset --soft <commitID>`** 
   - Moves **branchRef+HEAD backwards** but does not rollback Index or update workingDir 
   - Therefore, all changes from the 'squashed' commits **preserved as staged changes in the Index** (+/- local workDir changes) 
-  - Running 'git status' will show squashed changes in **green** as 'changes to be committed' 
+  - Running `git status` will show squashed changes in **green** as 'changes to be committed' 
   - Next commit we can selectively stage/unstage as required (+/- local workingDir changes)  
-* **reset --mixed [commitID]** (default) 
+* **`reset --mixed <commitID>`** (default) 
   - Moves **branchRef+HEAD + Index** backwards but does not update workingDir
   - Therefore, index will mirror commitID and changes from 'squashed' commits are **preserved as changes in workDir**
-  - Running 'git status' shows only **red** files as 'changes not staged for commit'
+  - Running `git status` shows only **red** files as 'changes not staged for commit'
   - Next commit will include all previously staged changes up to commitID (+/- local workDir changes) 
-* **reset --hard [commitID]** 
+* **`reset --hard <commitID>`** 
   - Moves **branchRef+HEAD + Index + WorkDir** backward to mirror commitID 
   - Therefore, NO changes are preserved from 'squahsed' commits (and workDir is overwritten! - DANGEROUS) 
-  - git status shows 'nothing to commit, working directory clean' so we need new workDir changes before we can add/commit  
+  - `git status` shows 'nothing to commit, working directory clean' so we need new workDir changes before we can add/commit  
 
-```
+```bash
 git log --all --graph  --decorate --oneline  # take note of commitID when we merged branch 'footer' 
 git reset <selectCommitID>             # reset to when we merged 'footer' (note all changes from later commits preseved as local changes) 
 git log --all --graph  --decorate --oneline  # note (HEAD, master) are reset
@@ -521,7 +521,7 @@ demo9 - Revert
 * E.g. a bug was introduced by a specific commit, we can revert just that commit to remove its changes
 * Note, conflicts from merging the revision's reverse patch can occur if later revisions changed the same lines (this is avoided below as each reverted commit affects separate files) 
 
-```
+```bash
 vim index.html                              
 git commit -a -m "adding comment 1" 
 vim page1.html                             
@@ -538,12 +538,12 @@ git commit -m "reverting changes" # review and apply reverted changes
 
 demo10 - Pushing/Pulling to/from a remote
 ----------------------------------------
-* Create a remote repo on GitHUB via GitHub Web portal. 
+* Create a remote repo on GitHub via GitHub Web portal. 
 * Add our newly created remote GitHub repo to our local repo under name 'origin' 
 * Push our existing repository 'master' branch to GitHub 
-* fetch, pull, remove remote
+* Fetch, pull, remove remote
 
-```
+```bash
 git config --list 
 git remote -vv   # note no remote repos have been setup (no output) 
 git branch -a    # note only local branches 
