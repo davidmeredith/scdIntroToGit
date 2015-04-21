@@ -62,12 +62,12 @@ Tip: To view this markdown file (.md) as a webpage, install a markdown viewer/pl
 
 demo1 - Create repo from existing files, add .gitignore
 --------------------------------------------------------
-* Create a git repo from an existing project. 
+* Create a Git repo from an existing project. 
 * Create some files that will be added to .gitignore. 
 * Add all files to staging area (index), commit and repeat. 
 * Note ignored files are not included, and the linear history and the location of HEAD pointer.  
 
-```
+```bash
 mkdir demo1; cd demo1      # create demo subdir
 vim index.html             # copy content from above
 vim page1.html             # copy content from above 
@@ -97,7 +97,7 @@ git show <commitID>        # to show what was changed in commit
 
 demo4 - Three Way Merge then FastForward 
 -----------------------------------------
-```
+```bash
 git log --oneline --graph --decorate --all  # note fork start position (footer in footer and text in master)
 	* 568438c (HEAD, master) adding paragraph
 	| * 33991ba (footer) adding footer
@@ -153,7 +153,7 @@ git log --oneline --graph --decorate --all  # note both branches up to date
 demo6 - Merge Conflict
 -----------------------
 
-```
+```bash
 git log --oneline --graph --decorate --all  # note fork start position (footer in footer and text in master)
 	* 568438c (HEAD, master) adding paragraph
 	| * 33991ba (footer) adding footer
@@ -207,7 +207,7 @@ less index.html      # note conflict resolved and footer is merged
 
 demo7 stashing
 --------------
-```
+```bash
 git branch
 	* dev
 	  master
