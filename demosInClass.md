@@ -2,66 +2,9 @@ An introduction to Git via demos
 =================================
 Tip: To view this markdown file (.md) as a webpage, install a markdown viewer/plugin into your browser.
 
-### index.html
 
-``` html
-<!DOCTYPE html>
-
-<html>
-    <head>
-        <title>index page</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <body>
-        <div>index body</div>
-
-        <div id="mymenu">
-            <a href="page1.html">page1</a> 
-        </div> 
-
-
-        <!--
-        <div id="footer">
-            Courtesy STFC
-        </div>
-        -->
-        
-    </body>
-</html>
-```
-
-### page1.html
-
-``` html
-<!DOCTYPE html>
-
-<html>
-    <head>
-        <title>index page</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    </head>
-    <body>
-        <div>page 1 body</div>
-
-        <div id="mymenu">
-            <a href="page1.html">page1</a> 
-        </div> 
-
-
-        <!--
-        <div id="footer">
-            Courtesy STFC
-        </div>
-        -->
-        
-    </body>
-</html>
-```
-
-demo1 - Create repo from existing files, add .gitignore
---------------------------------------------------------
+demo1 - Init repo from existing files, add .gitignore, commit
+-------------------------------------------------------------
 * Create a git repo from an existing project. 
 * Create some files that will be added to .gitignore. 
 * Add all files to staging area (index), commit and repeat. 
@@ -91,67 +34,69 @@ git commit -m "first modifications"
 git status                 # note clean working dir
 git log --oneline --graph --decorate --all # note HEAD-pointsTo->master-pointsTo->hash 
 git show <commitID>        # to show what was changed in commit
+git help commit            # fire up help in browser
+git 
 ```
 
 
 
 demo4 - Three Way Merge then FastForward 
 -----------------------------------------
+* Create a forked history
+* Merge footer into master using 3way merge
+* Bring footer up to date with master
+* Delete footer 'topic branch' 
+
 ```
-git log --oneline --graph --decorate --all  # note fork start position (footer in footer and text in master)
-	* 568438c (HEAD, master) adding paragraph
-	| * 33991ba (footer) adding footer
-	|/
+git checkout -b footer            # create and checkout footer branch
+vim index.html                    # un-comment footer
+vim page1.html                    # un-comment footer 
+git commit -a -m "adding footer"  # stage all modified files and commit 
+git log --oneline --graph --decorate --all   # at this point, we have not forked, but note master is behind footer 
+	* cf8dcae (HEAD, footer) adding footer
+	* 3ffa711 (master) fixed bug in page1
 	* 7af7c7a removing page2 - too soon
 	* 3a3b05f adding page2
 	* 43b9178 initial commit
 
-git show HEAD          # show what was added in last commit
-git checkout footer
-git show HEAD          # note un-commenting of footer
-less index.html        # note footer is *not* in comments and no paragraph
 git checkout master
-less index.html        # note footer is in comments and added paragraph (line 15)
-git merge footer       # merge footer into master 
+vim index.html       # note footer still commented out, add a comment 
+git commit -a -m "add comment"   # We fork here - master moves on independently of footer as below
+
+git log --oneline --graph --all --decorate
+	* 7a851ae (HEAD, master) adding comment
+	| * cf8dcae (footer) adding footer
+	|/
+	* 3ffa711 fixed bug in page1
+	* 7af7c7a removing page2 - too soon
+	* 3a3b05f adding page2
+	* 43b9178 initial commit
+
+git merge footer
 	Auto-merging index.html
 	Merge made by the 'recursive' strategy.
 	 index.html | 4 ++--
 	 page1.html | 4 ++--
 	 2 files changed, 4 insertions(+), 4 deletions(-)
-
-less index.html      # note footer and paragraph both present
-git log --oneline --graph --decorate --all      # note master now ahead of footer
-	*   5e88ea0 (HEAD, master) Merge branch 'footer'
-	|\
-	| * 33991ba (footer) adding footer
-	* | 568438c adding paragraph
-	|/
-	* 7af7c7a removing page2 - too soon
-	* 3a3b05f adding page2
-	* 43b9178 initial commit
-
-git checkout footer     # bring footer up to date, first checkout footer 
-git merge master        # merge master into footer 
-	Updating 33991ba..5e88ea0
+ 
+more index.html                  # note footer and comment integrated 
+git checkout footer
+git merge master                 # note fast forward merge 
+	Updating cf8dcae..a5d3680
 	Fast-forward
 	 index.html | 2 +-
 	 1 file changed, 1 insertion(+), 1 deletion(-)
 
-git log --oneline --graph --decorate --all  # note both branches up to date
-	*   5e88ea0 (HEAD, master, footer) Merge branch 'footer'
-	|\
-	| * 33991ba adding footer
-	* | 568438c adding paragraph
-	|/
-	* 7af7c7a removing page2 - too soon
-	* 3a3b05f adding page2
-	* 43b9178 initial commit
- 
-
+git log --oneline --graph --all --decorate  # note footer, master up to date
+git checkout master
+git branch -d footer    # delete local footer branch 
 ```
 
 demo6 - Merge Conflict
 -----------------------
+* Create a forked history with changes to same lines in two different versions of same file. 
+* 3 way merge produces conflict
+* Fix merge conflicts 
 
 ```
 git log --oneline --graph --decorate --all  # note fork start position (footer in footer and text in master)
@@ -162,12 +107,9 @@ git log --oneline --graph --decorate --all  # note fork start position (footer i
 	* 3a3b05f adding page2
 	* 43b9178 initial commit
 
-git show HEAD           # note paragraph text added
-less index.html         # note footer is in comments
 vim index.html          # add 'Version 1 body text' below <div>index body</div>
 git commit -a -m "adding v1 body text"
 git checkout footer
-less index.html         # note footer is not in comments 
 vim index.html          # add 'Version 2 body text' below <div>index body</div>
 git commit -a -m "adding v2 body text"
 git log --oneline --graph --decorate --all   # note extended forks 
@@ -207,21 +149,17 @@ less index.html      # note conflict resolved and footer is merged
 
 demo7 stashing
 --------------
+* Try to checkout master - prevented
+* Note local changes 
+* Stash local changes 
+* checkout master
+* checkout dev
+* pop local changes back into dev
+
 ```
 git branch
 	* dev
 	  master
-
-git log --oneline --graph --decorate --all
-	* 798601c (HEAD, dev) moving dev ahead of master
-	*   9c14db5 (master) Merge branch 'footer'
-	|\
-	| * 33991ba adding footer
-	* | 568438c adding paragraph
-	|/
-	* 7af7c7a removing page2 - too soon
-	* 3a3b05f adding page2
-	* 43b9178 initial commit
 git checkout master
 	error: Your local changes to the following files would be overwritten by checkout:
 		index.html
@@ -263,5 +201,11 @@ git checkout master  # as before we CANT now switch to master again
 
 
 
+```
+git config --global http.proxy wwwcache.dl.ac.uk:8080
+git config --global http.proxy wwwcache.dl.ac.uk:8080
 
+git config --global --unset http.proxy
+git config --global --unset https.proxy
+```
 
