@@ -10,7 +10,7 @@ demo1 - Init repo from existing files, add .gitignore, commit
 * Add all files to staging area (index), commit and repeat. 
 * Note ignored files are not included, and the linear history and the location of HEAD pointer.  
 
-```
+```bash
 mkdir demo1; cd demo1      # create demo subdir
 vim index.html             # copy content from above
 vim page1.html             # copy content from above 
@@ -47,7 +47,7 @@ demo4 - Three Way Merge then FastForward
 * Bring footer up to date with master
 * Delete footer 'topic branch' 
 
-```
+```bash
 git checkout -b footer            # create and checkout footer branch
 vim index.html                    # un-comment footer
 vim page1.html                    # un-comment footer 
@@ -98,7 +98,7 @@ demo6 - Merge Conflict
 * 3 way merge produces conflict
 * Fix merge conflicts 
 
-```
+```bash
 git log --oneline --graph --decorate --all  # note fork start position (footer in footer and text in master)
 	* 568438c (HEAD, master) adding paragraph
 	| * 33991ba (footer) adding footer
@@ -156,7 +156,7 @@ demo7 stashing
 * checkout dev
 * pop local changes back into dev
 
-```
+```bash
 git branch
 	* dev
 	  master
@@ -201,7 +201,7 @@ git checkout master  # as before we CANT now switch to master again
 
 
 
-```
+```bash
 git config --global http.proxy wwwcache.dl.ac.uk:8080
 git config --global http.proxy wwwcache.dl.ac.uk:8080
 
