@@ -5,7 +5,7 @@ Tip: To view this markdown file (.md) as a webpage, install a markdown viewer/pl
 
 demo1 - Init repo from existing files, add .gitignore, commit
 -------------------------------------------------------------
-* Create a git repo from an existing project. 
+* Create a Git repo from an existing project.
 * Create some files that will be added to .gitignore. 
 * Add all files to staging area (index), commit and repeat. 
 * Note ignored files are not included, and the linear history and the location of HEAD pointer.  
