@@ -2,7 +2,7 @@ An introduction to Git via demos
 =================================
 Tip: To view this markdown file (.md) as a webpage, install a markdown viewer/plugin into your browser.
 
-Note: The repository that demostrates the tools featured in the [Introduction To GitHub Tools](https://github.com/davidmeredith/scdIntroToGit/blob/master/IntroToGitHubTools.pdf)talk can be found [here](https://github.com/tofu-rocketry/gh-tools-demo).
+Note: The repository that demostrates the tools featured in the [Introduction To GitHub Tools](https://github.com/davidmeredith/scdIntroToGit/blob/master/IntroToGitHubTools.pdf) talk can be found [here](https://github.com/tofu-rocketry/gh-tools-demo).
 
 Using these demos
 -----------------
