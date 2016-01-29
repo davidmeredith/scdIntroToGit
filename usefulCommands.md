@@ -1,6 +1,6 @@
 # Useful Commands
 
-'''
+```
 git config --global user.name 'your name'
 git config --global user.email 'email'
 
@@ -20,14 +20,14 @@ git log origin/master..HEAD  --oneline --stat  # view unpushed commit log (compa
 git diff origin/master..HEAD 
 
 
-Unstage a staged file
+# Unstage a staged file
 git reset HEAD <file>...
 
-Unmodify a modified file
+# Unmodify a modified file
 git checkout --<file>
 
 
-'''
+```
 
 
 
