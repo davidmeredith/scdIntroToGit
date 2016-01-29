@@ -16,7 +16,7 @@ A|  - new file added to staging area
 git diff          # with no args shows diff between workDir/StageArea (ie changes not yet staged) 
 git diff --staged # to compare stage area / last commit 
 git diff --cached # alias for above
-git log origin/master..HEAD  --oneline --stat  # view unpushed commits (compare origin/master to HEAD)
+git log origin/master..HEAD  --oneline --stat  # view unpushed commit log (compare commits between origin/master to HEAD)
 git diff origin/master..HEAD 
 
 
