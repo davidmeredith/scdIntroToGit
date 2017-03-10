@@ -3,6 +3,11 @@
 ```
 git config --global user.name 'your name'
 git config --global user.email 'email'
+# win clients have 260char max limit on file names so you may need to set longpaths
+# note, this without the --global will only set on a per-project basis 
+git config core.longpaths.true
+git config --list 
+
 
 # shows short status 
 git status -s   
